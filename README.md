@@ -45,3 +45,12 @@ Notes
 -----
 - The DynamoDB resource is defined in `dynamodb.tf` and uses `LockID` as the hash key.
 - You can protect the table from accidental deletion using the `prevent_destroy` lifecycle rule included in `dynamodb.tf`.
+
+Pipeline check
+--------------
+This repository includes `scripts/ensure-dynamodb.sh` which runs in CI to ensure the DynamoDB table exists and has the correct `LockID` hash key. The Jenkins pipeline runs this before `terraform init`; it will create the table if missing or fail the build when the table exists but has the wrong key (to avoid destructive automatic deletes). Use:
+
+```bash
+./scripts/ensure-dynamodb.sh my-dynamodb-ta us-east-1
+```
+
